@@ -27,6 +27,11 @@ task wrapper(type: Wrapper) {
    gradleVersion = '2.6' //version required
 }
 
+task execute(type:JavaExec) {
+   main = 'org.cwp.TestLeak'
+   classpath = sourceSets.main.runtimeClasspath
+}
+
 uploadArchives {
     repositories {
        flatDir {
