@@ -30,9 +30,16 @@ task wrapper(type: Wrapper) {
    gradleVersion = '2.6' //version required
 }
 
-task execute(type:JavaExec) {
-   main = 'org.cwp.TestLeak'
+task runByteTest(type:JavaExec) {
+   main = 'org.cwp.RunByteLeak'
    classpath = sourceSets.main.runtimeClasspath
+   jvmArgs '-Xmx256m'
+}
+
+task runListTest(type:JavaExec) {
+    main = 'org.cwp.RunListLeak'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-Xmx128m'
 }
 
 uploadArchives {
