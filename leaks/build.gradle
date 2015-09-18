@@ -31,21 +31,31 @@ task wrapper(type: Wrapper) {
 }
 
 task runByteTest(type:JavaExec) {
-   main = 'org.cwp.RunByteLeak'
+   main = 'org.cwp.RunLeak'
    classpath = sourceSets.main.runtimeClasspath
    jvmArgs '-Xmx256m'
+   args = ["ByteLeak"]
 }
 
 task runListTest(type:JavaExec) {
-    main = 'org.cwp.RunListLeak'
+    main = 'org.cwp.RunLeak'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-Xmx128m'
+    args = ["ListLeak"]
 }
 
-task runMapLeakListTest(type:JavaExec) {
-    main = 'org.cwp.RunMapKeyLeak'
+task runMapGoodKeyTest(type:JavaExec) {
+    main = 'org.cwp.RunLeak'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-Xmx128m'
+    args = ["MapKeyLeak", "GoodKey"]
+}
+
+task runMapBadKeyTest(type:JavaExec) {
+    main = 'org.cwp.RunLeak'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-Xmx128m'
+    args = ["MapKeyLeak"]
 }
 
 uploadArchives {
