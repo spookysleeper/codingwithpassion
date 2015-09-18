@@ -42,6 +42,12 @@ task runListTest(type:JavaExec) {
     jvmArgs '-Xmx128m'
 }
 
+task runMapLeakListTest(type:JavaExec) {
+    main = 'org.cwp.RunMapKeyLeak'
+    classpath = sourceSets.main.runtimeClasspath
+    jvmArgs '-Xmx128m'
+}
+
 uploadArchives {
     repositories {
        flatDir {
