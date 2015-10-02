@@ -8,6 +8,7 @@ import java.util.Map;
 //http://www.codeproject.com/Articles/30593/Effective-Java
 //Primitive types sizes: http://btoddb-java-sizing.blogspot.sk/2012/01/object-sizes.html
 //Class-loader leaks
+//https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
 public abstract  class Leak {
 
     public static int ONE_MEGABYTE = 1024 * 1024;
