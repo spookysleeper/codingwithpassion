@@ -9,6 +9,7 @@ import java.util.Map;
 //Primitive types sizes: http://btoddb-java-sizing.blogspot.sk/2012/01/object-sizes.html
 //Class-loader leaks
 //https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
+//http://www.eclipse.org/jetty/documentation/current/embedding-jetty.html
 public abstract  class Leak {
 
     public static int ONE_MEGABYTE = 1024 * 1024;
