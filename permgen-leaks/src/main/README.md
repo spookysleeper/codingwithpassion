@@ -1,0 +1,1 @@
+These are permgen leaks examples.
