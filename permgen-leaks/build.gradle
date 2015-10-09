@@ -1,6 +1,6 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
-apply plugin: ' bmuschko.tomcat'
+apply plugin: 'idea'
 
 //compileJava.options.fork = true
 //compileJava.options.forkOptions.executable = "$System.env.JAVA_7_SDK"
@@ -16,13 +16,22 @@ jar {
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
-    classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.2'
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
     testCompile group: 'junit', name: 'junit', version: '4.+'
+}
+
+// Fills out all dependencies which are necessary to start the embedded jetty into our war file
+configurations {
+    embeddedJetty
+}
+dependencies {
+     embeddedJetty 'org.eclipse.jetty:jetty-servlet:+'
+     embeddedJetty 'org.eclipse.jetty:jetty-webapp:+'
+     embeddedJetty 'org.eclipse.jetty:jetty-jsp:+'
+     embeddedJetty 'org.eclipse.jetty:jetty-annotations:+'
 }
 
 test {
@@ -33,28 +42,7 @@ task wrapper(type: Wrapper) {
    gradleVersion = '2.6' //version required
 }
 
-task runByteTest(type:JavaExec) {
-   main = 'org.cwp.RunLeak'
-   classpath = sourceSets.main.runtimeClasspath
-   jvmArgs '-Xmx256m'
-   args = ["ByteLeak"]
-}
-
-task runListTest(type:JavaExec) {
-    main = 'org.cwp.RunLeak'
-    classpath = sourceSets.main.runtimeClasspath
-    jvmArgs '-Xmx128m'
-    args = ["ListLeak"]
-}
-
-task runMapGoodKeyTest(type:JavaExec) {
-    main = 'org.cwp.RunLeak'
-    classpath = sourceSets.main.runtimeClasspath
-    jvmArgs '-Xmx128m'
-    args = ["MapKeyLeak", "GoodKey"]
-}
-
-task runMapBadKeyTest(type:JavaExec) {
+task runTest(type:JavaExec) {
     main = 'org.cwp.RunLeak'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-Xmx128m'
