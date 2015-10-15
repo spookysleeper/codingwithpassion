@@ -5,6 +5,8 @@ apply plugin: 'idea'
 //http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java?rq=1
 //compileJava.options.fork = true
 //compileJava.options.forkOptions.executable = "$System.env.JAVA_7_SDK"
+//http://www.javaranch.com/journal/200711/creating_java_classes_runtime_expression_evaluation.html
+//http://jboss-javassist.github.io/javassist/html/javassist/CtField.html
 
 sourceCompatibility = 1.5
 version = '1.0'
