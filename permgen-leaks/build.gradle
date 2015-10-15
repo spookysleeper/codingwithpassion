@@ -1,7 +1,8 @@
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-
+//https://github.com/frodeaa/embedded-jetty-gradle
+//http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java?rq=1
 //compileJava.options.fork = true
 //compileJava.options.forkOptions.executable = "$System.env.JAVA_7_SDK"
 
@@ -20,18 +21,8 @@ repositories {
 
 dependencies {
     compile group: 'commons-collections', name: 'commons-collections', version: '3.2'
+    compile "org.javassist:javassist:3.20.0-GA"
     testCompile group: 'junit', name: 'junit', version: '4.+'
-}
-
-// Fills out all dependencies which are necessary to start the embedded jetty into our war file
-configurations {
-    embeddedJetty
-}
-dependencies {
-     embeddedJetty 'org.eclipse.jetty:jetty-servlet:+'
-     embeddedJetty 'org.eclipse.jetty:jetty-webapp:+'
-     embeddedJetty 'org.eclipse.jetty:jetty-jsp:+'
-     embeddedJetty 'org.eclipse.jetty:jetty-annotations:+'
 }
 
 test {
@@ -46,7 +37,6 @@ task runTest(type:JavaExec) {
     main = 'org.cwp.RunLeak'
     classpath = sourceSets.main.runtimeClasspath
     jvmArgs '-Xmx128m'
-    args = ["MapKeyLeak"]
 }
 
 uploadArchives {
