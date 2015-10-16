@@ -9,7 +9,7 @@ public class ClassLeak extends Leak {
         ClassPool pool = ClassPool.getDefault();
         int classIndex = 0;
         while(true) {
-            Class clazz = createClass(pool, "Leak" + classIndex);
+            createClass(pool, "Leak" + classIndex);
             classIndex++;
             if (classIndex % 250 == 0) {
                 printFreeMemory();
@@ -17,7 +17,7 @@ public class ClassLeak extends Leak {
         }
     }
 
-    private Class createClass(ClassPool pool, String className) {
+    private void createClass(ClassPool pool, String className) {
         try {
             CtClass leakClass = pool.makeClass(className);
             leakClass.addField(
@@ -27,10 +27,9 @@ public class ClassLeak extends Leak {
                     CtNewMethod.make(
                             "public double eval (double x) { return x + numb ; }",
                             leakClass));
-            return leakClass.toClass();
+            leakClass.toClass();
         } catch (CannotCompileException exc) {
             exc.printStackTrace();
-            return null;
         }
     }
 

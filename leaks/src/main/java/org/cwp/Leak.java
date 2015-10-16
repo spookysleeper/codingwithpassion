@@ -14,6 +14,7 @@ import java.util.Map;
 //Primitive types sizes: http://btoddb-java-sizing.blogspot.sk/2012/01/object-sizes.html
 //Class-loader leaks
 //https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
+//http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java
 public abstract  class Leak {
 
     public static int ONE_KILOBYTE = 1024;
@@ -38,7 +39,7 @@ public abstract  class Leak {
                 System.out.printf("free permGen memory is %sKB\n", (usage.getMax() - usage.getUsed()) / ONE_KILOBYTE);
             }
         }
-        System.out.println("Free heap memory is " + getFreeMemory() + "MB");
+        System.out.printf("free heap memory is %sMB\n", getFreeMemory());
     }
 
     private long getFreeMemory() {
