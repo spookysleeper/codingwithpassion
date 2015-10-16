@@ -1,6 +1,11 @@
 package org.cwp;
 
+import java.lang.management.ManagementFactory;
+import java.lang.management.MemoryPoolMXBean;
+import java.lang.management.MemoryType;
+import java.lang.management.MemoryUsage;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 //Simple heap leaks
@@ -11,7 +16,8 @@ import java.util.Map;
 //https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
 public abstract  class Leak {
 
-    public static int ONE_MEGABYTE = 1024 * 1024;
+    public static int ONE_KILOBYTE = 1024;
+    public static int ONE_MEGABYTE = ONE_KILOBYTE * ONE_KILOBYTE;
     public static int ONE_SECOND = 1000;
 
     public abstract  void run(String args[]);
@@ -25,7 +31,14 @@ public abstract  class Leak {
     }
 
     protected void printFreeMemory() {
-        System.out.println("Free memory is " + getFreeMemory() + "MB");
+        for (MemoryPoolMXBean item : ManagementFactory.getMemoryPoolMXBeans()) {
+            String name = item.getName();
+            MemoryUsage usage = item.getUsage();
+            if (name.contains("Perm Gen") && name.contains("")) {
+                System.out.printf("free permGen memory is %sKB\n", (usage.getMax() - usage.getUsed()) / ONE_KILOBYTE);
+            }
+        }
+        System.out.println("Free heap memory is " + getFreeMemory() + "MB");
     }
 
     private long getFreeMemory() {

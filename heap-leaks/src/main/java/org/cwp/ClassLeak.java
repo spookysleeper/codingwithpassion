@@ -2,44 +2,35 @@ package org.cwp;
 
 import javassist.*;
 
-import java.lang.reflect.Method;
-
 public class ClassLeak extends Leak {
 
     @Override
     public void run(String[] args) {
-        Class clazz = createClass("Leak");
-        invokeMethod(clazz);
+        ClassPool pool = ClassPool.getDefault();
+        int classIndex = 0;
+        while(true) {
+            Class clazz = createClass(pool, "Leak" + classIndex);
+            classIndex++;
+            if (classIndex % 250 == 0) {
+                printFreeMemory();
+            }
+        }
     }
 
-    private Class createClass(String className) {
+    private Class createClass(ClassPool pool, String className) {
         try {
-            ClassPool pool = ClassPool.getDefault();
-            CtClass leakClass = pool.makeClass("Leak");
+            CtClass leakClass = pool.makeClass(className);
             leakClass.addField(
-                    CtField.make("private static final byte[] space = new byte[200000];", leakClass)
+                    CtField.make("private double numb = 0.0;", leakClass)
             );
             leakClass.addMethod(
                     CtNewMethod.make(
-                            "public double eval (double x) { return 1.0d ; }",
+                            "public double eval (double x) { return x + numb ; }",
                             leakClass));
             return leakClass.toClass();
         } catch (CannotCompileException exc) {
             exc.printStackTrace();
             return null;
-        }
-    }
-
-    private void invokeMethod(Class clazz) {
-        try {
-            Object obj = clazz.newInstance();
-            Class[] formalParams = new Class[] { double.class };
-            Method meth = clazz.getDeclaredMethod("eval", formalParams);
-            Object[] actualParams = new Object[] { new Double(17) };
-            double result = ((Double) meth.invoke(obj, actualParams)).doubleValue();
-            System.out.println(result);
-        } catch (Exception exc) {
-            exc.printStackTrace();
         }
     }
 

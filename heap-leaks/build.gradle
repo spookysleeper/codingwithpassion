@@ -41,7 +41,7 @@ task runByteTest(type:JavaExec) {
 task runClassTest(type:JavaExec) {
     main = 'org.cwp.RunLeak'
     classpath = sourceSets.main.runtimeClasspath
-    jvmArgs '-Xmx256m'
+    jvmArgs '-XX:MaxPermSize=16m'
     args = ["ClassLeak"]
 }
 
