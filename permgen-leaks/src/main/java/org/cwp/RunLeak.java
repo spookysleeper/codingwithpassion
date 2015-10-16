@@ -10,8 +10,6 @@ import javassist.*;
 public class RunLeak {
 
     public static void main(String [] args) throws Exception {
-        File leakJava = new File("hallo");
-        System.out.println(leakJava.getAbsoluteFile());
         ClassPool pool = ClassPool.getDefault();
         CtClass leakClass = pool.makeClass("Leak");
         leakClass.addField(
