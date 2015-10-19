@@ -15,6 +15,7 @@ import java.util.Map;
 //Class-loader leaks
 //https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
 //http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java
+//http://stackoverflow.com/questions/24559839/memory-usage-of-byte-array-in-java
 public abstract  class Leak {
 
     public static int ONE_KILOBYTE = 1024;

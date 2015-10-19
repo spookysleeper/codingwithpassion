@@ -31,22 +31,6 @@ task wrapper(type: Wrapper) {
    gradleVersion = '2.6' //version required
 }
 
-//gradlew runTest -PclassName=ClassLeak -Pmemory=-XX:MaxPermSize=16m
-//gradlew runTest -PclassName=ByteLeak -Pmemory=-Xmx256m
-//gradlew runTest -PclassName=ListLeak -Pmemory=-Xmx128m
-//gradlew runTest -PclassName=MapKeyLeak -Pmemory=-Xmx128m
-
-task runTest(type:JavaExec) {
-    main = "org.cwp.RunLeak"
-    classpath = sourceSets.main.runtimeClasspath
-    jvmArgs "${memory}"
-    if ("${param}") {
-        args = ["${className}", "${param}"]
-    } else {
-        args = ["${className}"]
-    }
-}
-
 task runByteTest(type:JavaExec) {
    main = 'org.cwp.RunLeak'
    classpath = sourceSets.main.runtimeClasspath
