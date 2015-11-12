@@ -8,14 +8,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-//Simple heap leaks
-//Refs: http://stackoverflow.com/questions/4062512/a-simple-program-to-demonstrate-memory-leak-in-java
-//http://www.codeproject.com/Articles/30593/Effective-Java
-//Primitive types sizes: http://btoddb-java-sizing.blogspot.sk/2012/01/object-sizes.html
-//Class-loader leaks
-//https://plumbr.eu/blog/locked-threads/how-to-shoot-yourself-in-foot-with-threadlocals
-//http://stackoverflow.com/questions/6470651/creating-a-memory-leak-with-java
-//http://stackoverflow.com/questions/24559839/memory-usage-of-byte-array-in-java
 public abstract  class Leak {
 
     public static int ONE_KILOBYTE = 1024;
