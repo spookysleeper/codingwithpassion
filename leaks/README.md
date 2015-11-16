@@ -2,10 +2,11 @@ Heap leaks examples.
 http://www.codeproject.com/Articles/30593/Effective-Java
 http://javarevisited.blogspot.sk/2011/09/javalangoutofmemoryerror-permgen-space.html
 
-In Java you can have impression that you don't have to think about memory management. This can't be further from the truth, because
-if you create too many objects too fast, garbage collector must work harder and memory becomes more fragmented and because of this
-you application will be slower. Nowadays, modern VM are very efficient and can deal efficiently with rapid small object creation, but
-there are limits. If you hit limit you application will die due to memory leak.
+In Java you can have impression that you don't have to think about memory management. This is true for majority of cases. But there are limits, because
+if you create too many objects with mixed sizes too fast, garbage collector must work harder.
+Memory becomes more fragmented which again force garbage collector to compact heap space and make long pauses or throw "Java.lang.OutOfMemoryError" exception.
+These long pause times are typically triggered when your Java program attempts to allocate large object, such as an array.
+Nowadays, modern VM are very efficient and can deal efficiently with rapid small object creation, but if you hit limit you application will die or becomes unresponsive.
 
 Concept of memory leak is very simple, you introduce memory leaks by maintaining obsolete references to Objects. An obsolete reference
 is simply a reference that will never be dereferenced again.
@@ -29,6 +30,8 @@ But in practise, you will see this tree most often.
 
 We will demonstrate in this post, that it's easy to create memory leak in Java and in extreme cases memory leaks can cause disk paging and
 program failure with an <i>OutOfMemoryError</i>.
+
+So we decided to create easy examples how to create memory leak.
 
 Why arrays consume more space:
 http://stackoverflow.com/questions/24559839/memory-usage-of-byte-array-in-java
