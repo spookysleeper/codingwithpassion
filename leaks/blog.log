@@ -1,0 +1,31 @@
+In Java you can have impression that you don't have to think about memory management. This is true for majority of cases. But there are limits, because
+if you create too many objects with mixed sizes too fast, garbage collector must work harder.
+Memory becomes more fragmented which again force garbage collector to compact heap space and make long pauses or throw "Java.lang.OutOfMemoryError" exception.
+These long pause times are typically triggered when your Java program attempts to allocate large object, such as an array.
+Nowadays, modern VM are very efficient and can deal efficiently with rapid small object creation, but if you hit limit you application will die or becomes unresponsive.
+
+Concept of memory leak is very simple, you introduce memory leaks by maintaining obsolete references to Objects. An obsolete reference
+is simply a reference that will never be dereferenced again. This is so called "simple memory leak".
+
+There are also "true memory leaks" and they are different story. "True memory leaks" are those where you create objects that
+are inaccessible by running code but still stored in memory.
+
+One famous example of true leak is concoction of custom class loader, long running thread with thread local variables preferably inside of application container.
+This works because the ThreadLocal keeps a reference to the object, which keeps a reference to its Class, which in turn keeps a reference to
+its ClassLoader. The ClassLoader, in turn, keeps a reference to all the Classes it has loaded.
+With multiple deploys you application will break with totally unexpected permanent generation memory leak exception.
+
+There are many out of memory errors. Look here for description: https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html
+But in practise, you will see this tree most often.
+1) Java.lang.OutOfMemoryError: Java heap space
+   Heap is full
+2) Java.lang.OutOfMemoryError: PermGen space
+   Permanent generation space is full.
+3) java.lang.OutOfMemoryError: GC Overhead limit exceeded
+   GC is working way to hard with little or no result.
+
+In this blog post I decided to show how easy is to create memory leak.
+This come come in handy for some code interview, or it can be good example of what _not to do.
+
+Why arrays consume more space:
+http://stackoverflow.com/questions/24559839/memory-usage-of-byte-array-in-java
