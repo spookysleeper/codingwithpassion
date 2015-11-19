@@ -27,5 +27,18 @@ But in practise, you will see this tree most often.
 In this blog post I decided to show how easy is to create memory leak.
 This come come in handy for some code interview, or it can be good example of what _not to do.
 
-Why arrays consume more space:
-http://stackoverflow.com/questions/24559839/memory-usage-of-byte-array-in-java
+All examples are runnable, all you need to do is to clone https://github.com/spookysleeper/codingwithpassion/tree/master/leaks repository and run gradle script.
+
+Byte leak
+
+To run this example type: gradlew runByteTest.
+
+This is demonstration of pretty straight forward memory leak using array list and byte array.
+Array is growing and each element is holding references to one megabyte byte array. Arrays need be allocated as continuous chunks of memory within heap space, and
+if memory is fragmented GB is struggling and break in the end with Java.lang.OutOfMemoryError: Java heap space exception.
+
+gist
+
+As you can see, CG didn't have a chance. It's a massacre!
+
+
