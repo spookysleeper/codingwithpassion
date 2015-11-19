@@ -16,5 +16,4 @@ public class ByteLeak extends Leak {
         }
     }
 
-
 }
