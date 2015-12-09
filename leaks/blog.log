@@ -1,21 +1,21 @@
 In Java you can have impression that you don't have to think about memory management. This is true for majority of cases. But there are limits, because
-if you create too many objects with mixed sizes too fast, garbage collector must work harder.
-Memory becomes more fragmented which again force garbage collector to compact heap space and make long pauses or throw "Java.lang.OutOfMemoryError" exception.
+if you create too many objects with mixed sizes too fast, garbage collector will work harder and application will be slow.
+Memory can become more fragmented which again force garbage collector to compact heap space and make long pauses or throw "Java.lang.OutOfMemoryError" exception.
 These long pause times are typically triggered when your Java program attempts to allocate large object, such as an array.
 Nowadays, modern VM are very efficient and can deal efficiently with rapid small object creation, but if you hit limit you application will die or becomes unresponsive.
 
 Concept of memory leak is very simple, you introduce memory leaks by maintaining obsolete references to Objects. An obsolete reference
 is simply a reference that will never be dereferenced again. This is so called "simple memory leak".
 
-There are also "true memory leaks" and they are different story. "True memory leaks" are those where you create objects that
+There are also "true memory leaks". You introduce this leaks when you create objects that
 are inaccessible by running code but still stored in memory.
 
-One famous example of true leak is concoction of custom class loader, long running thread with thread local variables preferably inside of application container.
+One famous example of true leak is concoction of custom class loader, long running thread with thread local variables preferably inside of application container (mmmmmm, so good! :) ).
 This works because the ThreadLocal keeps a reference to the object, which keeps a reference to its Class, which in turn keeps a reference to
 its ClassLoader. The ClassLoader, in turn, keeps a reference to all the Classes it has loaded.
 With multiple deploys you application will break with totally unexpected permanent generation memory leak exception.
 
-There are many out of memory errors. Look here for description: https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html
+There are many "out of memory" errors. Look here for description: https://docs.oracle.com/javase/8/docs/technotes/guides/troubleshoot/memleaks002.html
 But in practise, you will see this tree most often.
 1) Java.lang.OutOfMemoryError: Java heap space
    Heap is full
@@ -31,7 +31,7 @@ All examples are runnable, all you need to do is to clone https://github.com/spo
 
 Byte leak
 
-To run this example type: gradlew runByteTest.
+To run this example type: "gradlew runByteTest"
 
 This is demonstration of pretty straight forward memory leak using array list and byte array.
 Array is growing and each element is holding references to one megabyte byte array. Arrays need be allocated as continuous chunks of memory within heap space, and
@@ -39,6 +39,39 @@ if memory is fragmented GB is struggling and break in the end with Java.lang.Out
 
 gist
 
-As you can see, CG didn't have a chance. It's a massacre!
+As you can see from this graph, CG didn't have a chance. It's a massacre!
 
+List leak
 
+To run this example type: "gradlew runListTest"
+
+List leak is similar to previous example. It creates list of BigDecimal objects which are newer dereferenced. Simple and effective.
+BigDecimal is chosen only because it is heavier than simple Integer or Float or something.
+
+gist
+
+You can see that this time GC is trying really hard to clean heap, but fails eventually.
+
+Map key leak
+
+Next leak is bit more sophisticated, but at it's core no different than list leak. This is demonstration what will happen when your implementation of hashCode is bad.
+Element will bee added indefinitely and every time reference will remain active.
+
+You can run this example by typing: "gradlew runMapBadKeyTest" or you can type "gradlew runMapGoodKeyTest" to test it with good key.
+
+gist
+
+This time CG is not even trying, maybe because StringBuilder with 100000 elements is so much heavier than BigDecimal and simply doesn't have time to do anything.
+
+Class leak
+
+Permanent generation hold internal representations of java classes among other things (names of classes, methods, Strings...).
+Simplest way of introducing memory leak in this memory area is to create too many classes. Other more sophisticated example is mentioned earlier in this post as "true memory leak".
+
+To run example type: "gradlew runClassTest"
+
+gist
+
+As you can see, it escalate pretty quickly. Because of this, you don't even get PermGen exception every time you run it, it just break on random thing.
+
+Thanks for reading, hope you like it! :)
